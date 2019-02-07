@@ -34,11 +34,15 @@ usage:
   -sdl2    build for sdl2
   -glfw    build for glfw
 
+  -doc     build doxygen docs in doc/
+
   -v       be more verbose
   -q       be less verbose
 EOF
     exit 1
 }
+
+cd ${SRC_DIR}
 
 # process command line args
 while [ $# -gt 0 ]; do
@@ -50,6 +54,9 @@ while [ $# -gt 0 ]; do
             export CXX=clang++
             ;;
         -doc*)
+            for skin in resources/*skin*/ ; do
+                ./doc/skindoc.py "$skin/skin.tb.txt"
+            done
             # take a detour, update the gh-pages branch
             ./doc/ghpages.sh
             echo "Made docs"
