@@ -29,7 +29,6 @@ ipch
 obj
 bin
 gen
-* gitignore
 
 documentation
 doc/html
@@ -51,3 +50,19 @@ Demo.exe
 
 TurboBadgerDemo*
 Build*/
+thirdparty/*
+
+# Why do they appear in the first place...
+CMakeCache.txt
+CMakeFiles/
+Demo/CMakeCache.txt
+Demo/CMakeFiles/
+Demo/Makefile
+Demo/cmake_install.cmake
+cmake_install.cmake
+doc/Doxyfile
+src/tb/CMakeFiles/
+src/tb/Makefile
+src/tb/cmake_install.cmake
+src/tb/libTurboBadgerLib.a
+

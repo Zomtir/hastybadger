@@ -253,10 +253,34 @@ void TBParser::OnLine(char *line, TBParserTarget *target)
 	}
 
 	// Check indent
+    int strPos = 0;
 	int indent = 0;
-	while (line[indent] == '\t' && line[indent] != 0)
-		indent++;
-	line += indent;
+    bool indentProcessing = true;
+    while(indentProcessing) {
+        switch (line[strPos]) {
+        case 0:
+            return;
+        case ' ':
+            if (line[strPos + 1] != ' ' ||
+                line[strPos + 2] != ' ' ||
+                line[strPos + 3] != ' ' ) {
+                target->OnError(current_line_nr, "Use four spaces per indent. (Line skipped)");
+                return;
+            }
+            strPos+=4;
+            indent++;
+            break;
+        case '\t':
+            strPos++;
+            indent++;
+            break;
+        default:
+            indentProcessing = false;
+            break;
+        }
+    }
+    // Move the line pointer to the start of the actual string
+	line += strPos;
 
 	if (indent - current_indent > 1)
 	{
@@ -279,55 +303,50 @@ void TBParser::OnLine(char *line, TBParserTarget *target)
 			current_indent--;
 		}
 	}
+    
+	char *token = line;
+	// Read line while consuming it and copy over to token buf
+	while (!is_white_space(line) && *line != 0)
+		line++;
+	size_t token_len = line - token;
+	// Consume any white space after the token
+	while (is_white_space(line))
+		line++;
 
-	if (*line == 0)
-		return;
-	else
+	bool is_compact_line = token_len && token[token_len - 1] == ':';
+
+	TBValue value;
+	if (is_compact_line)
 	{
-		char *token = line;
-		// Read line while consuming it and copy over to token buf
-		while (!is_white_space(line) && *line != 0)
-			line++;
-		size_t token_len = line - token;
-		// Consume any white space after the token
-		while (is_white_space(line))
-			line++;
+		token_len--;
+		token[token_len] = 0;
 
-		bool is_compact_line = token_len && token[token_len - 1] == ':';
-
-		TBValue value;
-		if (is_compact_line)
+		// Check if the first argument is not a child but the value for this token
+		if (*line == '[' || *line == '\"' || *line == '\'' ||
+			is_start_of_number(line) ||
+			is_start_of_color(line) ||
+			is_start_of_reference(line))
 		{
-			token_len--;
-			token[token_len] = 0;
+			ConsumeValue(value, line);
 
-			// Check if the first argument is not a child but the value for this token
-			if (*line == '[' || *line == '\"' || *line == '\'' ||
-				is_start_of_number(line) ||
-				is_start_of_color(line) ||
-				is_start_of_reference(line))
+			if (pending_multiline)
 			{
-				ConsumeValue(value, line);
-
-				if (pending_multiline)
-				{
-					// The value wrapped to the next line, so we should remember the token and continue.
-					multi_line_token.Set(token);
-					return;
-				}
+				// The value wrapped to the next line, so we should remember the token and continue.
+				multi_line_token.Set(token);
+				return;
 			}
 		}
-		else if (token[token_len])
-		{
-			token[token_len] = 0;
-			UnescapeString(line);
-			value.SetFromStringAuto(line, TBValue::SET_AS_STATIC);
-		}
-		target->OnToken(current_line_nr, token, value);
-
-		if (is_compact_line)
-			OnCompactLine(line, target);
 	}
+	else if (token[token_len])
+	{
+		token[token_len] = 0;
+		UnescapeString(line);
+		value.SetFromStringAuto(line, TBValue::SET_AS_STATIC);
+	}
+	target->OnToken(current_line_nr, token, value);
+
+	if (is_compact_line)
+		OnCompactLine(line, target);
 }
 
 void TBParser::OnCompactLine(char *line, TBParserTarget *target)
