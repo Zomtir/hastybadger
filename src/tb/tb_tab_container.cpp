@@ -80,7 +80,7 @@ void TBTabContainer::SetCurrentPage(int index)
 		return;
 	m_current_page = index;
 
-	// Update the pages visibility and tabs pressed value.
+	// Update the pages visibility
 	index = 0;
 	TBWidget *page = m_content_root.GetFirstChild();
 	TBWidget *tab = m_tab_layout.GetFirstChild();
@@ -88,7 +88,6 @@ void TBTabContainer::SetCurrentPage(int index)
 	{
 		bool active = index == m_current_page;
 		page->SetVisibility(active ? WIDGET_VISIBILITY_VISIBLE : WIDGET_VISIBILITY_INVISIBLE);
-		tab->SetValue(active ? 1 : 0);
 	}
 }
 
@@ -122,14 +121,13 @@ void TBTabContainer::SetAlignment(TB_ALIGN align)
 
 bool TBTabContainer::OnEvent(const TBWidgetEvent &ev)
 {
-	std::cout << "hey it's me" << std::endl;
 	if ((ev.type == EVENT_TYPE_CLICK || ev.type == EVENT_TYPE_POINTER_DOWN) &&
 		ev.target->GetID() == TBIDC("tab") &&
 		ev.target->GetParent() == &m_tab_layout)
 	{
 		int clicked_index = m_tab_layout.GetIndexFromChild(ev.target);
 		std::cout << clicked_index << std::endl;
-		SetValue(clicked_index);
+		SetCurrentPage(clicked_index);
 		return true;
 	}
 	return false;
@@ -143,7 +141,7 @@ void TBTabContainer::OnProcess()
 		// Force update value
 		int current_page = m_current_page;
 		m_current_page = -1;
-		SetValue(current_page);
+		SetCurrentPage(current_page);
 	}
 }
 

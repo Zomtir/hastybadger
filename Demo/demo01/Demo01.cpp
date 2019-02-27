@@ -3,6 +3,7 @@
 #include "ResourceEditWindow.h"
 #include <stdio.h>
 #include <stdarg.h>
+#include <iostream>
 #include "tests/tb_test.h"
 #include "tb_system.h"
 #include "tb_language.h"
