@@ -18,10 +18,7 @@ Thumbs.db
 *.tlog
 *.obj
 *.bak
-
 *.lnk
-
-*.sublime-workspace
 
 Debug
 Release
@@ -51,3 +48,4 @@ Demo.exe
 
 TurboBadgerDemo*
 Build*/
+

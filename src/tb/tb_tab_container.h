@@ -45,12 +45,8 @@ public:
 	TB_ALIGN GetAlignment() const { return m_align; }
 
 	/** Set which page should be selected and visible. */
-	virtual void SetValue(long value);
-	virtual long GetValue() const { return m_current_page; }
-
-	/** Set which page should be selected and visible. */
-	void SetCurrentPage(int index) { SetValue(index); }
-	int GetCurrentPage() { return GetValue(); }
+	void SetCurrentPage(int index);
+	int GetCurrentPage();
 	int GetNumPages();
 
 	/** Return the widget that is the current page, or nullptr if none is active. */

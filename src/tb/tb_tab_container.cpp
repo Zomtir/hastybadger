@@ -5,6 +5,7 @@
 
 #include "tb_tab_container.h"
 #include <assert.h>
+#include <iostream>
 
 namespace tb {
 
@@ -73,7 +74,7 @@ void TBTabContainer::SetAxis(AXIS axis)
 											TBIDC("TBTabContainer.tablayout_x"));
 }
 
-void TBTabContainer::SetValue(long index)
+void TBTabContainer::SetCurrentPage(int index)
 {
 	if (index == m_current_page)
 		return;
@@ -89,6 +90,11 @@ void TBTabContainer::SetValue(long index)
 		page->SetVisibility(active ? WIDGET_VISIBILITY_VISIBLE : WIDGET_VISIBILITY_INVISIBLE);
 		tab->SetValue(active ? 1 : 0);
 	}
+}
+
+int TBTabContainer::GetCurrentPage()
+{
+	return m_current_page;
 }
 
 int TBTabContainer::GetNumPages()
@@ -116,11 +122,13 @@ void TBTabContainer::SetAlignment(TB_ALIGN align)
 
 bool TBTabContainer::OnEvent(const TBWidgetEvent &ev)
 {
+	std::cout << "hey it's me" << std::endl;
 	if ((ev.type == EVENT_TYPE_CLICK || ev.type == EVENT_TYPE_POINTER_DOWN) &&
 		ev.target->GetID() == TBIDC("tab") &&
 		ev.target->GetParent() == &m_tab_layout)
 	{
 		int clicked_index = m_tab_layout.GetIndexFromChild(ev.target);
+		std::cout << clicked_index << std::endl;
 		SetValue(clicked_index);
 		return true;
 	}
