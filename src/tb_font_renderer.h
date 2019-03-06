@@ -12,7 +12,7 @@
 #include "tb_tempbuffer.h"
 #include "tb_linklist.h"
 #include "tb_font_desc.h"
-#include "utf8/utf8.h"
+#include "thirdparty/utf8.h"
 
 namespace tb {
 

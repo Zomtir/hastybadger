@@ -4,7 +4,7 @@
 #ifdef TB_SYSTEM_SDL2
 
 #include "tb_widgets.h"
-#include "renderers/tb_renderer_gl.h"
+#include "tb_renderer_gl.h"
 
 #ifdef __APPLE__
 #include <TargetConditionals.h>

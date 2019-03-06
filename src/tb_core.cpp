@@ -9,8 +9,8 @@
 #include "tb_language.h"
 #include "tb_font_renderer.h"
 #include "tb_system.h"
-#include "animation/tb_animation.h"
-#include "image/tb_image_manager.h"
+#include "tb_animation.h"
+#include "tb_image_manager.h"
 
 namespace tb {
 
@@ -32,9 +32,12 @@ bool tb_core_init(TBRenderer *renderer)
 	g_widgets_reader = TBWidgetsReader::Create();
 #ifdef TB_IMAGE
 	g_image_manager = new TBImageManager();
-#endif
 	return renderer && g_tb_lng && g_font_manager && g_tb_skin
 		&& g_widgets_reader && g_image_manager;
+#else
+	return renderer && g_tb_lng && g_font_manager && g_tb_skin
+		&& g_widgets_reader;
+#endif
 }
 
 void tb_core_shutdown()

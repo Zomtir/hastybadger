@@ -3,9 +3,9 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "parser/tb_parser.h"
+#include "tb_parser.h"
 #include "tb_tempbuffer.h"
-#include "utf8/utf8.h"
+#include "thirdparty/utf8.h"
 #include <assert.h>
 #include <ctype.h>
 

@@ -6,7 +6,7 @@
 #ifndef TB_ANIMATION_UTILS_H
 #define TB_ANIMATION_UTILS_H
 
-#include "animation/tb_animation.h"
+#include "tb_animation.h"
 
 namespace tb {
 

@@ -3,7 +3,7 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "animation/tb_animation.h"
+#include "tb_animation.h"
 #include "tb_system.h"
 #include "tb_debug.h"
 

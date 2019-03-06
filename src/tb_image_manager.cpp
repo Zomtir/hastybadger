@@ -3,7 +3,7 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "image/tb_image_manager.h"
+#include "tb_image_manager.h"
 
 #ifdef TB_IMAGE
 

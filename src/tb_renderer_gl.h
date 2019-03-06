@@ -84,7 +84,7 @@ extern PFNGLGENVERTEXARRAYSOESPROC glGenVertexArraysOESEXT;
 
 #endif
 
-#include "renderers/tb_renderer_batcher.h"
+#include "tb_renderer_batcher.h"
 
 namespace tb {
 

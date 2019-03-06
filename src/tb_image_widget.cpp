@@ -3,7 +3,7 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "image/tb_image_widget.h"
+#include "tb_image_widget.h"
 #include "tb_widgets_reader.h"
 #include "tb_node_tree.h"
 #include "tb_system.h"

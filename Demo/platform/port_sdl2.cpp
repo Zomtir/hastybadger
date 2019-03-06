@@ -15,7 +15,7 @@
 #include "tb_skin.h"
 #include "tb_system.h"
 #include "tb_msg.h"
-#include "renderers/tb_renderer_gl.h"
+#include "tb_renderer_gl.h"
 #include "tb_font_renderer.h"
 #include "Application.h"
 

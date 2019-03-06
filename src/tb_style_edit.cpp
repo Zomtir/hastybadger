@@ -9,7 +9,7 @@
 #include "tb_system.h"
 #include "tb_tempbuffer.h"
 #include "tb_font_renderer.h"
-#include "utf8/utf8.h"
+#include "thirdparty/utf8.h"
 #include <assert.h>
 
 namespace tb {

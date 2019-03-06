@@ -4,7 +4,7 @@
 #ifdef TB_CLIPBOARD_GLFW
 #include "glfw_extra.h"
 #include "tb_widgets.h"
-#include "renderers/tb_renderer_gl.h"
+#include "tb_renderer_gl.h"
 
 using namespace tb;
 

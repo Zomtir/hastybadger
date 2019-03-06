@@ -8,7 +8,6 @@
 
 // Include <tb_config.h> so it may be overridden in application directory.
 // The default "tb_config.h" (local) will be used if there is no other match.
-#include <tb_config.h>
 
 #include <string.h>
 #include <cstdint>

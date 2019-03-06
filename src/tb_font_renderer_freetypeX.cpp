@@ -10,7 +10,7 @@
 #include <glm/vec2.hpp>
 using glm::vec2;
 
-#ifdef TB_FONT_RENDERER_FREETYPE_NONO
+#ifdef TB_FONT_RENDERER_FREETYPEX
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -372,4 +372,4 @@ void register_freetype_font_renderer()
 		g_font_manager->AddRenderer(fr);
 }
 
-#endif // TB_FONT_RENDERER_FREETYPE
+#endif // TB_FONT_RENDERER_FREETYPEX

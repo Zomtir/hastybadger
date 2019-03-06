@@ -13,12 +13,12 @@
 #include "tb_editfield.h"
 #include "tb_tab_container.h"
 #include "tb_bitmap_fragment.h"
-#include "animation/tb_widget_animation.h"
+#include "tb_widget_animation.h"
 #include "tb_node_tree.h"
 #include "tb_tempbuffer.h"
 #include "tb_font_renderer.h"
-#include "image/tb_image_manager.h"
-#include "utf8/utf8.h"
+#include "tb_image_manager.h"
+#include "thirdparty/utf8.h"
 
 AdvancedItemSource * advanced_source;
 TBGenericStringItemSource * name_source;

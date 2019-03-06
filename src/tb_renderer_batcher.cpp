@@ -3,7 +3,7 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "renderers/tb_renderer_batcher.h"
+#include "tb_renderer_batcher.h"
 #include "tb_bitmap_fragment.h"
 #include "tb_system.h"
 #include <stdio.h>
