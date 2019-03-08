@@ -45,6 +45,7 @@ add_library(hblib SHARED
 	src/tb_debug.cpp
 	src/tb_dimension.cpp
 	src/tb_editfield.cpp
+	src/tb_file_android.cpp
 	src/tb_file_posix.cpp
 	src/tb_font_renderer.cpp
 	src/tb_font_renderer_freetype.cpp
@@ -104,20 +105,20 @@ add_library(hblib SHARED
 
 # FONT RENDERER
 if(TB_FONT_RENDERER_FREETYPE)
-  add_compile_definitions(TB_FONT_RENDERER_FREETYPE=ON)
+	add_compile_definitions(TB_FONT_RENDERER_FREETYPE=ON)
 endif()
 if(TB_FONT_RENDERER_FREETYPEX)
-  add_compile_definitions(TB_FONT_RENDERER_FREETYPEX=ON)
+  	add_compile_definitions(TB_FONT_RENDERER_FREETYPEX=ON)
 endif()
 if(TB_FONT_RENDERER_STB)
-  add_compile_definitions(TB_FONT_RENDERER_STB=ON)
+  	add_compile_definitions(TB_FONT_RENDERER_STB=ON)
 endif()
 if(TB_FONT_RENDERER_TBBF)
-  add_compile_definitions(TB_FONT_RENDERER_TBBF=ON)
+  	add_compile_definitions(TB_FONT_RENDERER_TBBF=ON)
 endif()
 
 if(TB_IMAGE_LOADER_STB)
-  add_compile_definitions(TB_IMAGE_LOADER_STB=ON)
+ 	add_compile_definitions(TB_IMAGE_LOADER_STB=ON)
 endif()
 
 add_compile_definitions(
@@ -127,16 +128,20 @@ add_compile_definitions(
 
 # SYSTEM
 if(TB_SYSTEM_ANDROID)
-  add_compile_definitions(TB_SYSTEM_ANDROID=ON)
+  	add_compile_definitions(TB_SYSTEM_ANDROID=ON)
+  	add_compile_definitions(TB_FILE_ANDROID=ON)
 endif()
 if(TB_SYSTEM_LINUX)
-  add_compile_definitions(TB_SYSTEM_LINUX=ON)
+  	add_compile_definitions(TB_SYSTEM_LINUX=ON)
+  	add_compile_definitions(TB_FILE_POSIX=ON)
 endif()
 if(TB_SYSTEM_SDL2)
   add_compile_definitions(TB_SYSTEM_SDL2=ON)
+  add_compile_definitions(TB_FILE_POSIX=ON)
 endif()
 if(TB_SYSTEM_WINDOWS)
   add_compile_definitions(TB_SYSTEM_WINDOWS=ON)
+  add_compile_definitions(TB_FILE_POSIX=ON)
   target_link_libraries(hblib winmm.lib)
 endif()
 
@@ -158,8 +163,6 @@ endif()
 if(TB_RUNTIME_DEBUG_INFO)
   add_compile_definitions(TB_RUNTIME_DEBUG_INFO=ON)
 endif()
-
-# target_include_directories(mylib THIRDPARTY src/thirdparty)
 
 set_target_properties(hblib PROPERTIES VERSION ${PROJECT_VERSION})
 

@@ -3,10 +3,9 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "tb_system.h"
-
 #ifdef TB_FILE_POSIX
 
+#include "tb_system.h"
 #include <stdio.h>
 
 namespace tb {

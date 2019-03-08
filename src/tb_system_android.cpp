@@ -19,11 +19,10 @@
 #include <android/asset_manager_jni.h>
 #include <android/configuration.h>
 
-#if defined(TB_RUNTIME_DEBUG_INFO) || 1
+#ifdef TB_RUNTIME_DEBUG_INFO
 
-#define  LOG_TAG    "TB"
-#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
-#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO, "TB", __VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, "TB", __VA_ARGS__)
 
 void TBDebugOut(const tb::TBStr & str)
 {
@@ -78,48 +77,6 @@ int TBSystem::GetDPI()
 	if (density == 0 || density == ACONFIGURATION_DENSITY_NONE)
 		return 120;
 	return density;
-}
-
-// == TBFile =====================================
-
-class TBAndroidFile : public TBFile
-{
-public:
-	TBAndroidFile(AAsset* f) : file(f) {}
-	virtual ~TBAndroidFile() { AAsset_close(file); }
-
-	virtual long Size()
-	{
-		return AAsset_getLength(file);
-	}
-	virtual size_t Read(void *buf, size_t elemSize, size_t count)
-	{
-		return AAsset_read(file, buf, elemSize * count);
-	}
-	virtual size_t Write(const void *buf, size_t elemSize, size_t count) {return 0;}
-	virtual size_t Write(const TBStr & str) {return 0;}
-
-private:
-	AAsset *file;
-};
-
-TBFile *TBFile::Open(const TBStr & filename, TBFileMode mode)
-{
-	AAsset *f = nullptr;
-	switch (mode)
-	{
-	case MODE_READ:
-		f = AAssetManager_open(g_pManager, (const char *)filename, AASSET_MODE_UNKNOWN);
-		break;
-	default:
-		break;
-	}
-	if (!f)
-		return nullptr;
-	TBAndroidFile *tbf = new TBAndroidFile(f);
-	if (!tbf)
-		AAsset_close(f);
-	return tbf;
 }
 
 } // namespace tb
