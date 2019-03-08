@@ -2,12 +2,12 @@
 // ==      This file is a part of Turbo Badger. (C) 2011-2014, Emil Segerås      ==
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
-//#include <iostream>
+
+#ifdef TB_FONT_RENDERER_FREETYPE
+
 #include "tb_font_renderer.h"
 #include "tb_renderer.h"
 #include "tb_system.h"
-
-#ifdef TB_FONT_RENDERER_FREETYPE
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -117,35 +117,28 @@ bool FreetypeFontRenderer::RenderGlyph(TBFontGlyphData *data, UCS4 cp)
 		data->data8 = slot->bitmap.buffer;
 		return data->data8 ? true : false;
 	}
-#if 0
-#define FTC(CALL) do {													\
-		FT_Error err = CALL;											\
-		if (err) TBDebugPrint("Error %s:%d = %d\n", __FILE__, __LINE__, err); \
-		/*else TBDebugPrint("OK %s:%d\n", __FILE__, __LINE__);	*/		\
-	} while(0)
-
+#ifdef TB_RUNTIME_DEBUG_INFO
 	else {
 		FT_Face face = m_face->f_face;
 		memset(&m_data[0], 0, sizeof(m_data));
 		// initialize stroker, so you can create outline font
 		FT_Stroker stroker;
-		FTC(FT_Stroker_New(g_freetype, &stroker));
+		TBDebugError(FT_Stroker_New(g_freetype, &stroker));
 		//  2 * 64 result in 2px outline
 		FT_Stroker_Set(stroker, 1 * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
 		//...
 		// generation of an outline for single glyph:
 		FT_UInt glyphIndex = FT_Get_Char_Index(face, cp);
-		FTC(FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP));
+		TBDebugError(FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP));
 		float bearingX = face->glyph->metrics.horiBearingX / 64.f;
 		float bearingY = face->glyph->metrics.horiBearingY / 64.f;
 		float advance = face->glyph->advance.x / 64.f;
 		assert(face->glyph->format == FT_GLYPH_FORMAT_OUTLINE);
 		FT_Glyph glyph;
-		FTC(FT_Get_Glyph(face->glyph, &glyph));
-		FTC(FT_Glyph_StrokeBorder(&glyph, stroker, false, true));
-		//FTC(FT_Glyph_Stroke(&glyph, stroker, true));
+		TBDebugError(FT_Get_Glyph(face->glyph, &glyph));
+		TBDebugError(FT_Glyph_StrokeBorder(&glyph, stroker, false, true));
 		if (glyph->format != FT_GLYPH_FORMAT_BITMAP)
-			FTC(FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, true));
+			TBDebugError(FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, true));
 		FT_BitmapGlyph slot = reinterpret_cast<FT_BitmapGlyph>(glyph);
 		assert(glyph->format == FT_GLYPH_FORMAT_BITMAP);
 		//assert(slot->bitmap.rows);
@@ -166,18 +159,19 @@ bool FreetypeFontRenderer::RenderGlyph(TBFontGlyphData *data, UCS4 cp)
 			}
 		FT_Done_Glyph(glyph);
 		// generate the character
-		FTC(FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT));
-		FTC(FT_Get_Glyph(face->glyph, &glyph));
+		TBDebugError(FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT));
+		TBDebugError(FT_Get_Glyph(face->glyph, &glyph));
+
 		if (glyph->format != FT_GLYPH_FORMAT_BITMAP)
-			FTC(FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, true));
+			TBDebugError(FT_Glyph_To_Bitmap(&glyph, FT_RENDER_MODE_NORMAL, nullptr, true));
 		slot = reinterpret_cast<FT_BitmapGlyph>(glyph);
 		//assert(slot->bitmap.rows);
 		// blit the text
 		TBDebugPrint("%d x %d, l:%d t:%d stride:%d / %d\n",
 					 slot->bitmap.width, slot->bitmap.rows,
 					 slot->left, slot->top, slot->bitmap.pitch, stride);
-#if 1
-		for (unsigned int rr = 0; rr < slot->bitmap.rows; rr++)
+
+		for (unsigned int rr = 0; rr < slot->bitmap.rows; rr++) {
 			for (unsigned int cc = 0; cc < slot->bitmap.width; cc++) {
 				auto v = slot->bitmap.buffer[rr * slot->bitmap.pitch + cc];
 				if (v) {
@@ -186,7 +180,7 @@ bool FreetypeFontRenderer::RenderGlyph(TBFontGlyphData *data, UCS4 cp)
 					m_data[ix].a = v;
 				}
 			}
-#endif
+		}
 		data->w = stride;
 		data->h = slot->bitmap.rows;
 		data->stride = stride;

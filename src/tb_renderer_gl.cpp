@@ -158,7 +158,10 @@ void TBBitmapGL::SetData(uint32_t *data)
 	BindBitmap(this);
 	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_w, m_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
 	//GLCALL(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_w, m_h, GL_RGBA, GL_UNSIGNED_BYTE, data));
-	TB_IF_DEBUG_SETTING(RENDER_BATCHES, dbg_bitmap_validations++);
+#ifdef TB_RUNTIME_DEBUG_INFO
+		if (g_tb_debug.settings[TBDebugInfo::RENDER_BATCHES])
+			dbg_bitmap_validations++;
+#endif
 }
 
 // == TBRendererGL ================================================================================
@@ -375,10 +378,10 @@ void TBRendererGL::EndPaint()
 	GLCALL(glDisable(GL_SCISSOR_TEST));
 	GLCALL(glFlush());
 #ifdef TB_RUNTIME_DEBUG_INFO
-	if (TB_DEBUG_SETTING(RENDER_BATCHES))
+	if (g_tb_debug.settings[TBDebugInfo::RENDER_BATCHES])
 		TBDebugPrint("Frame caused %d bitmap validations.\n", dbg_bitmap_validations);
-#endif // TB_RUNTIME_DEBUG_INFO
 	//TBDebugPrint("Frame end idx %d.\n", _vboidx);
+#endif // TB_RUNTIME_DEBUG_INFO
 }
 
 TBBitmap *TBRendererGL::CreateBitmap(int width, int height, uint32_t *data)

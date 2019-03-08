@@ -28,7 +28,9 @@ void TBColor::SetFromString(const TBStr & str_)
 	else if (len == 4 && sscanf(str, "#%1x%1x%1x", &r, &g, &b) == 3)			// rgb
 		Set(TBColor(r + (r << 4), g + (g << 4), b + (b << 4)));
 	else {
+#ifdef TB_RUNTIME_DEBUG_INFO
 		TBDebugPrint("Invalid color '%s'\n", str);
+#endif // TB_RUNTIME_DEBUG_INFO
 		Set(TBColor());
 	}
 	//if (g_color_manager)
@@ -56,7 +58,9 @@ void TBColorManager::Load(TBNode * n, TBSkin * skin)
 bool TBColorManager::Define(const TBStr & cid, TBColor color)
 {
 	if (!_id2color.count(cid)) {
-		//TBDebugPrint("Define color '%s' -> %x\n", id.c_str(), (uint32_t)color);
+#ifdef TB_RUNTIME_DEBUG_INFO
+		TBDebugPrint("Define color '%s' -> %x\n", id.c_str(), (uint32_t)color);
+#endif // TB_RUNTIME_DEBUG_INFO
 		_id2color[cid] = color;
 		_color2id[color] = cid;
 		return true;
@@ -66,7 +70,9 @@ bool TBColorManager::Define(const TBStr & cid, TBColor color)
 
 void TBColorManager::ReDefine(const TBStr & cid, TBColor color)
 {
-	//TBDebugPrint("ReDefine color '%s' -> %x\n", id.c_str(), (uint32_t)color);
+#ifdef TB_RUNTIME_DEBUG_INFO
+	TBDebugPrint("ReDefine color '%s' -> %x\n", id.c_str(), (uint32_t)color);
+#endif // TB_RUNTIME_DEBUG_INFO
 	_id2color[cid] = color;
 	_color2id[color] = cid;
 }

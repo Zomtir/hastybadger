@@ -305,7 +305,10 @@ void TBLayout::ValidateLayout(const SizeConstraints &constraints, PreferredSize 
 		return;
 	}
 
-	TB_IF_DEBUG_SETTING(LAYOUT_PS_DEBUGGING, last_layout_time = TBSystem::GetTimeMS());
+#ifdef TB_RUNTIME_DEBUG_INFO
+	last_layout_time = TBSystem::GetTimeMS();
+	g_tb_debug.settings[TBDebugInfo::LAYOUT_PS_DEBUGGING];
+#endif // TB_RUNTIME_DEBUG_INFO
 
 	// Pre Layout step (calculate distribution position)
 	int missing_space = MAX(total_preferred_w - layout_rect.w, 0);
@@ -470,8 +473,10 @@ void TBLayout::OnPaintChildren(const PaintProps &paint_props)
 										fluff, m_overflow_scroll == m_overflow ? fluff : 0);
 
 		old_clip_rect = g_renderer->SetClipRect(clip_rect, true);
-
-		TB_IF_DEBUG_SETTING(LAYOUT_CLIPPING, g_tb_skin->PaintRect(clip_rect, TBColor(255, 0, 0, 200), 1));
+#ifdef TB_RUNTIME_DEBUG_INFO
+		if (g_tb_debug.settings[TBDebugInfo::LAYOUT_CLIPPING])
+			g_tb_skin->PaintRect(clip_rect, TBColor(255, 0, 0, 200), 1);
+#endif
 	}
 
 	// Paint children

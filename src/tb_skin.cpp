@@ -56,7 +56,9 @@ static SKIN_ELEMENT_TYPE StringToType(const TBStr & type_str)
 		return SKIN_ELEMENT_TYPE_TILE;
 	else if (strcmp(type_str.CStr(), "StretchBorder") == 0)
 		return SKIN_ELEMENT_TYPE_STRETCH_BORDER;
+#ifdef TB_RUNTIME_DEBUG_INFO
 	TBDebugOut("Skin error: Unknown skin type!\n");
+#endif
 	return SKIN_ELEMENT_TYPE_STRETCH_BOX;
 }
 
@@ -91,7 +93,9 @@ TBSkinCondition::TARGET StringToTarget(const TBStr & target_str)
 		return TBSkinCondition::TARGET_PREV_SIBLING;
 	else if (strcmp(target_str.CStr(), "next sibling") == 0)
 		return TBSkinCondition::TARGET_NEXT_SIBLING;
+#ifdef TB_RUNTIME_DEBUG_INFO
 	TBDebugOut("Skin error: Unknown target in condition!\n");
+#endif
 	return TBSkinCondition::TARGET_THIS;
 }
 
@@ -333,7 +337,9 @@ bool TBSkin::ReloadBitmapsInternal()
 																	 dedicated_map, bitmap_dpi);
 
 			if (!element->bitmap) {
+#ifdef TB_RUNTIME_DEBUG_INFO
 				TBDebugPrint("Bitmap %s: '%s' load failed\n", element->name.CStr(), element->bitmap_file.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 				success = false;
 			}
 		}
@@ -406,7 +412,9 @@ TBSkinElement *TBSkin::PaintSkin(const TBRect &dst_rect, TBSkinElement *element,
 	// Return the override if we have one.
 	TBSkinElement *return_element = element;
 
-	TB_IF_DEBUG(bool paint_error_highlight = false);
+#ifdef TB_RUNTIME_DEBUG_INFO
+	bool paint_error_highlight = false;
+#endif
 
 	// If there's any override for this state, paint it.
 	TBSkinElementState *override_state = element->m_override_elements.GetStateElement(state, context);
@@ -416,8 +424,10 @@ TBSkinElement *TBSkin::PaintSkin(const TBRect &dst_rect, TBSkinElement *element,
 			return_element = used_override;
 		else
 		{
-			TB_IF_DEBUG(paint_error_highlight = true);
+#ifdef TB_RUNTIME_DEBUG_INFO
+			paint_error_highlight = true
 			TBDebugOut("Skin error: The skin references a missing element, or has a reference loop!\n");
+#endif
 			// Fall back to the standard skin.
 			override_state = nullptr;
 		}
@@ -439,10 +449,13 @@ TBSkinElement *TBSkin::PaintSkin(const TBRect &dst_rect, TBSkinElement *element,
 		}
 	}
 
+#ifdef TB_RUNTIME_DEBUG_INFO
 	// Paint ugly rectangles on invalid skin elements in debug builds.
-	TB_IF_DEBUG(if (paint_error_highlight) g_tb_skin->PaintRect(dst_rect.Expand(1, 1), TBColor(255, 205, 0), 1));
-	TB_IF_DEBUG(if (paint_error_highlight) g_tb_skin->PaintRect(dst_rect.Shrink(1, 1), TBColor(255, 0, 0), 1));
-
+	if (paint_error_highlight)
+		g_tb_skin->PaintRect(dst_rect.Expand(1, 1), TBColor(255, 205, 0), 1);
+	if (paint_error_highlight)
+		g_tb_skin->PaintRect(dst_rect.Shrink(1, 1), TBColor(255, 0, 0), 1);
+#endif
 	element->is_painting = false;
 	return return_element;
 }

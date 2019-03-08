@@ -99,9 +99,11 @@ void TBWidget::OnInflate(const INFLATE_INFO &info)
 	}
 	if (TBStr skin = info.node->GetValueString("skin", nullptr))
 	{
+#ifdef TB_RUNTIME_DEBUG_INFO
 		if (!g_tb_skin->GetSkinElement(skin))
 			TBDebugPrint("Widget '%s' requesting invalid skin element '%s'\n",
 						 GetClassName(), skin.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 		SetSkinBg(skin);
 	}
 	if (TBNode *lp = info.node->GetNode("lp"))
@@ -410,14 +412,18 @@ void TBEditField::OnInflate(const INFLATE_INFO &info)
 		else if (stristr(type, "phone"))	SetEditType(EDIT_TYPE_PHONE);
 		else if (stristr(type, "url"))		SetEditType(EDIT_TYPE_URL);
 		else if (stristr(type, "number"))	SetEditType(EDIT_TYPE_NUMBER);
+#ifdef TB_RUNTIME_DEBUG_INFO
 		else TBDebugPrint("TBEditField: Unknown type '%s'\n", type.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 	}
 	if (TBStr text_align = info.node->GetValueString("text-align", nullptr))
 	{
 		if (!strcmp(text_align, "left"))		SetTextAlign(TB_TEXT_ALIGN_LEFT);
 		else if (!strcmp(text_align, "center"))	SetTextAlign(TB_TEXT_ALIGN_CENTER);
 		else if (!strcmp(text_align, "right"))	SetTextAlign(TB_TEXT_ALIGN_RIGHT);
+#ifdef TB_RUNTIME_DEBUG_INFO
 		else TBDebugPrint("TBEditField: Unknown text-align '%s'\n", text_align.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 	}
 	if (TBStr format = info.node->GetValueString("format", nullptr))
 		SetFormat(std::move(format));
@@ -460,8 +466,10 @@ void TBLayout::OnInflate(const INFLATE_INFO &info)
 			ls = LAYOUT_SIZE_GRAVITY;
 		else if (strstr(size, "preferred"))
 			;
+#ifdef TB_RUNTIME_DEBUG_INFO
 		else
 			TBDebugPrint("TBLayout: Unknown size '%s'\n", size.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 		SetLayoutSize(ls);
 	}
 	if (TBStr pos = info.node->GetValueString("position", nullptr))
@@ -475,8 +483,10 @@ void TBLayout::OnInflate(const INFLATE_INFO &info)
 			lp = LAYOUT_POSITION_GRAVITY;
 		else if (!strcmp(pos, "center"))
 			;
+#ifdef TB_RUNTIME_DEBUG_INFO
 		else
 			TBDebugPrint("TBLayout: Unknown position '%s'\n", pos.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 		SetLayoutPosition(lp);
 	}
 	if (TBStr pos = info.node->GetValueString("overflow", nullptr))
@@ -486,8 +496,10 @@ void TBLayout::OnInflate(const INFLATE_INFO &info)
 			lo = LAYOUT_OVERFLOW_SCROLL;
 		else if (strstr(pos, "clip"))
 			;
+#ifdef TB_RUNTIME_DEBUG_INFO
 		else
 			TBDebugPrint("TBLayout: Unknown overflow '%s'\n", pos.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 		SetLayoutOverflow(lo);
 	}
 	if (TBStr dist = info.node->GetValueString("distribution", nullptr))
@@ -499,8 +511,10 @@ void TBLayout::OnInflate(const INFLATE_INFO &info)
 			ld = LAYOUT_DISTRIBUTION_GRAVITY;
 		else if (strstr(dist, "preferred"))
 			;
+#ifdef TB_RUNTIME_DEBUG_INFO
 		else
 			TBDebugPrint("TBLayout: Unknown distribution '%s'\n", dist.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 		SetLayoutDistribution(ld);
 	}
 	if (TBStr dist = info.node->GetValueString("distribution-position", nullptr))
@@ -512,8 +526,10 @@ void TBLayout::OnInflate(const INFLATE_INFO &info)
 			ld = LAYOUT_DISTRIBUTION_POSITION_RIGHT_BOTTOM;
 		else if (!strcmp(dist, "center"))
 			;
+#ifdef TB_RUNTIME_DEBUG_INFO
 		else
 			TBDebugPrint("TBLayout: Unknown distribution-position '%s'\n", dist.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 		SetLayoutDistributionPosition(ld);
 	}
 	TBWidget::OnInflate(info);
@@ -572,7 +588,9 @@ void TBScrollContainer::OnInflate(const INFLATE_INFO &info)
 		else if (!strcmp(mode, "y-auto"))	SetScrollMode(SCROLL_MODE_Y_AUTO);
 		else if (!strcmp(mode, "auto"))		SetScrollMode(SCROLL_MODE_X_AUTO_Y_AUTO);
 		else if (!strcmp(mode, "off"))		SetScrollMode(SCROLL_MODE_OFF);
+#ifdef TB_RUNTIME_DEBUG_INFO
 		else TBDebugPrint("TBScrollContainer: Unknown scroll-mode '%s'\n", mode.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 	}
 	TBWidget::OnInflate(info);
 }
@@ -588,7 +606,9 @@ void TBTabContainer::OnInflate(const INFLATE_INFO &info)
 		else if (!strcmp(align, "top"))		SetAlignment(TB_ALIGN_TOP);
 		else if (!strcmp(align, "right"))	SetAlignment(TB_ALIGN_RIGHT);
 		else if (!strcmp(align, "bottom"))	SetAlignment(TB_ALIGN_BOTTOM);
+#ifdef TB_RUNTIME_DEBUG_INFO
 		else TBDebugPrint("TBTabContainer: Unknown align '%s'\n", align.CStr());
+#endif // TB_RUNTIME_DEBUG_INFO
 	}
 	// Allow additional attributes to be specified for the "tabs", "content" and "root" layouts by
 	// calling OnInflate.

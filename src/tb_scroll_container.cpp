@@ -78,7 +78,10 @@ void TBScrollContainerRoot::OnPaintChildren(const PaintProps &paint_props)
 
 	TBRect old_clip_rect = g_renderer->SetClipRect(clip_rect, true);
 
-	TB_IF_DEBUG_SETTING(LAYOUT_CLIPPING, g_tb_skin->PaintRect(clip_rect, TBColor(255, 0, 0, 200), 1));
+#ifdef TB_RUNTIME_DEBUG_INFO
+		if (g_tb_debug.settings[TBDebugInfo::LAYOUT_CLIPPING])
+			g_tb_skin->PaintRect(clip_rect, TBColor(255, 0, 0, 200), 1);
+#endif
 
 	TBWidget::OnPaintChildren(paint_props);
 

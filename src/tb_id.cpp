@@ -3,6 +3,8 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
+#ifdef TB_RUNTIME_DEBUG_INFO
+
 #include "tb_id.h"
 #include "tb_system.h"
 #include "tb_hashtable.h"
@@ -10,8 +12,6 @@
 namespace tb {
 
 // == TBID ==============================================================================
-
-#ifdef TB_RUNTIME_DEBUG_INFO
 
 // Hash table for checking if we get any collisions (same hash value for TBID's created
 // from different strings)
@@ -39,7 +39,9 @@ void TBID::Set(uint32_t newid)
 void TBID::Set(const TBID &newid)
 {
 	id = newid;
-	TB_IF_DEBUG(debug_string.Set(newid.debug_string));
+#ifdef TB_RUNTIME_DEBUG_INFO
+	debug_string.Set(newid.debug_string);
+#endif
 	if (!is_adding && tb_core_is_initialized())
 	{
 		if (TBID *other_id = all_id_hash.Get(id))
@@ -64,12 +66,14 @@ void TBID::Set(const TBID &newid)
 void TBID::Set(const char *string)
 {
 	id = TBGetHash(string);
-	TB_IF_DEBUG(debug_string.Set(string));
+#ifdef TB_RUNTIME_DEBUG_INFO
+	debug_string.Set(string);
+#endif
 	if (!is_adding && tb_core_is_initialized())
 	{
 		if (TBID *other_id = all_id_hash.Get(id))
 		{
-#ifndef NDEBUG
+#ifdef TB_RUNTIME_DEBUG_INFO
 			if (other_id->debug_string != debug_string) {
 				TBDebugPrint("ID collision btw '%s' and '%s'\n",
 							 other_id->debug_string.CStr(), debug_string.CStr());
@@ -93,6 +97,7 @@ const char * TBID::c_str() const
 		debug_string.SetFormatted("%d",id);
 	return debug_string.CStr();
 }
-#endif // TB_RUNTIME_DEBUG_INFO
 
 } // namespace tb
+
+#endif // TB_RUNTIME_DEBUG_INFO

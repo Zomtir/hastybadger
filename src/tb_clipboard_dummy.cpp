@@ -3,9 +3,9 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "tb_system.h"
-
 #ifdef TB_CLIPBOARD_DUMMY
+
+#include "tb_system.h"
 
 #include <sys/time.h>
 #include <stdio.h>

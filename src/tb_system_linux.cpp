@@ -3,11 +3,10 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "tb_system.h"
-#include "tb_str.h"
-
 #ifdef TB_SYSTEM_LINUX
 
+#include "tb_system.h"
+#include "tb_str.h"
 #include <sys/time.h>
 #include <stdio.h>
 

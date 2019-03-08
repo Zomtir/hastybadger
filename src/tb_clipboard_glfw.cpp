@@ -3,9 +3,9 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "tb_system.h"
-
 #ifdef TB_CLIPBOARD_GLFW
+
+#include "tb_system.h"
 
 #include "GLFW/glfw3.h"
 

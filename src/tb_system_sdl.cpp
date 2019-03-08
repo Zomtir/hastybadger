@@ -3,10 +3,10 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
+#ifdef TB_SYSTEM_SDL2
+
 #include "tb_system.h"
 #include <iostream>
-
-#ifdef TB_SYSTEM_SDL2
 
 #include "tb_msg.h"
 #include "tb_types.h"

@@ -3,6 +3,8 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
+#ifdef TB_RUNTIME_DEBUG_INFO
+
 #include "tb_core.h"
 #include "tb_system.h"
 #include "tb_widgets_reader.h"
@@ -14,14 +16,14 @@
 
 namespace tb {
 
-#ifdef TB_RUNTIME_DEBUG_INFO
-
 TBDebugInfo g_tb_debug;
 
 TBDebugInfo::TBDebugInfo()
 {
 	memset(settings, 0, sizeof(int) * NUM_SETTINGS);
 }
+
+(...)
 
 /** Window showing runtime debug settings. */
 class DebugSettingsWindow : public TBWindow, public TBWidgetListener
@@ -97,11 +99,11 @@ public:
 		g_renderer->Translate(GetRect().w, 0);
 
 		// Draw skin bitmap fragments
-		if (TB_DEBUG_SETTING(RENDER_SKIN_BITMAP_FRAGMENTS))
+		if (g_tb_debug.settings[TBDebugInfo::RENDER_SKIN_BITMAP_FRAGMENTS])
 			g_tb_skin->Debug();
 
 		// Draw font glyph fragments (the font of the hovered widget)
-		if (TB_DEBUG_SETTING(RENDER_FONT_BITMAP_FRAGMENTS))
+		if (g_tb_debug.settings[TBDebugInfo::RENDER_FONT_BITMAP_FRAGMENTS])
 		{
 			TBWidget *widget = TBWidget::hovered_widget ? TBWidget::hovered_widget : TBWidget::focused_widget;
 			g_font_manager->GetFontFace(widget ?
@@ -115,7 +117,6 @@ public:
 	TBStr GetIDString(const TBID &id)
 	{
 		TBStr str;
-#ifdef TB_RUNTIME_DEBUG_INFO
 		TBID idd;
 		idd.Set(id);
 		if (!idd.debug_string.IsEmpty()) {
@@ -124,7 +125,6 @@ public:
 			str.Append("\"");
 		}
 		else
-#endif
 			str.SetFormatted("%u", (uint32_t)id);
 		return str;
 	}
@@ -217,6 +217,6 @@ void ShowDebugInfoSettingsWindow(TBWidget *root)
 	new DebugSettingsWindow(root);
 }
 
-#endif // TB_RUNTIME_DEBUG_INFO
-
 } // namespace tb
+
+#endif // TB_RUNTIME_DEBUG_INFO

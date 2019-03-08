@@ -3,9 +3,9 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "tb_system.h"
-
 #ifdef TB_SYSTEM_WINDOWS
+
+#include "tb_system.h"
 
 #include <Windows.h>
 #include <mmsystem.h>

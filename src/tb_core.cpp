@@ -23,7 +23,9 @@ TBColorManager *g_color_manager = nullptr;
 
 bool tb_core_init(TBRenderer *renderer)
 {
-	//TBDebugPrint("Initiating Turbo Badger - version %s\n", TB_VERSION_STR);
+#ifdef TB_RUNTIME_DEBUG_INFO
+	TBDebugPrint("Initiating Hasty Badger - version %s\n", TB_VERSION_STR);
+#endif // TB_RUNTIME_DEBUG_INFO
 	g_renderer = renderer;
 	g_tb_lng = new TBLanguage;
 	g_font_manager = new TBFontManager();

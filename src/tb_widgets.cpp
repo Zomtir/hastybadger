@@ -1044,7 +1044,10 @@ PreferredSize TBWidget::GetPreferredSize(const SizeConstraints &in_constraints)
 	}
 
 	// Measure and save to cache
-	TB_IF_DEBUG_SETTING(LAYOUT_PS_DEBUGGING, last_measure_time = TBSystem::GetTimeMS());
+#ifdef TB_RUNTIME_DEBUG_INFO
+		if (g_tb_debug.settings[TBDebugInfo::LAYOUT_PS_DEBUGGING])
+			last_measure_time = TBSystem::GetTimeMS();
+#endif
 	m_packed.is_cached_ps_valid = 1;
 	m_cached_ps = OnCalculatePreferredSize(constraints);
 	m_cached_sc = constraints;
@@ -1181,7 +1184,10 @@ void TBWidget::InvokePaint(const PaintProps &parent_paint_props)
 	TBSkinElement *used_element = g_tb_skin->PaintSkin(local_rect, skin_element, static_cast<SKIN_STATE>(state), context);
 	assert(!!used_element == !!skin_element);
 
-	TB_IF_DEBUG_SETTING(LAYOUT_BOUNDS, g_tb_skin->PaintRect(local_rect, TBColor(255, 255, 255, 50), 1));
+#ifdef TB_RUNTIME_DEBUG_INFO
+		if (g_tb_debug.settings[TBDebugInfo::LAYOUT_BOUNDS])
+			g_tb_skin->PaintRect(local_rect, TBColor(255, 255, 255, 50), 1);
+#endif
 
 	// Inherit properties from parent if not specified in the used skin for this widget.
 	PaintProps paint_props = parent_paint_props;
@@ -1198,7 +1204,7 @@ void TBWidget::InvokePaint(const PaintProps &parent_paint_props)
 	OnPaintChildren(paint_props);
 
 #ifdef TB_RUNTIME_DEBUG_INFO
-	if (TB_DEBUG_SETTING(LAYOUT_PS_DEBUGGING))
+	if (g_tb_debug.settings[TBDebugInfo::LAYOUT_PS_DEBUGGING])
 	{
 		// Layout debug painting. Paint recently layouted widgets with red and
 		// recently measured widgets with yellow.

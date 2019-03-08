@@ -1,4 +1,4 @@
-#include "thirdparty/utf8.h"
+#include "utf8.h"
 
 namespace utf8 {
 

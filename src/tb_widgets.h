@@ -1163,7 +1163,6 @@ public:
 		TBWidget itself. Initially TYPE_NULL. */
 	TBValue data;
 
-	// Debugging
 #ifdef TB_RUNTIME_DEBUG_INFO
 	double last_measure_time;
 	double last_layout_time;

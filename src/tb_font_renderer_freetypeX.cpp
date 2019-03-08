@@ -3,14 +3,14 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
+#ifdef TB_FONT_RENDERER_FREETYPEX
+
 #include "tb_font_renderer.h"
 #include "tb_renderer.h"
 #include "tb_system.h"
 #include <vector>
 #include <glm/vec2.hpp>
 using glm::vec2;
-
-#ifdef TB_FONT_RENDERER_FREETYPEX
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -159,11 +159,6 @@ TBFontMetrics FreetypeFontRenderer::GetMetrics()
 	metrics.height = (int16_t) (m_size->metrics.height >> 6);
 	return metrics;
 }
-#define FTC(CALL) do {													\
-		FT_Error err = CALL;											\
-		if (err) TBDebugPrint("Error %s:%d = %d\n", __FILE__, __LINE__, err); \
-		/*else TBDebugPrint("OK %s:%d\n", __FILE__, __LINE__); */		\
-	} while(0)
 
 bool FreetypeFontRenderer::RenderGlyph(TBFontGlyphData *data, UCS4 cp, const TBColor & fontCol)
 {
@@ -171,7 +166,10 @@ bool FreetypeFontRenderer::RenderGlyph(TBFontGlyphData *data, UCS4 cp, const TBC
 	if (m_face->outline) {
 		FT_Face face = m_face->f_face;
 		FT_UInt gindex = FT_Get_Char_Index(face, cp);
-		FTC(FT_Load_Glyph(face, gindex, FT_LOAD_NO_BITMAP));
+		FT_Error err = FT_Load_Glyph(face, gindex, FT_LOAD_NO_BITMAP);
+#ifdef TB_RUNTIME_DEBUG_INFO
+		TBDebugError(err);
+#endif // TB_RUNTIME_DEBUG_INFO
 		// Need an outline for this to work.
 		assert(face->glyph->format == FT_GLYPH_FORMAT_OUTLINE);
 		//float bearingX = face->glyph->metrics.horiBearingX >> 6;
@@ -197,7 +195,9 @@ bool FreetypeFontRenderer::RenderGlyph(TBFontGlyphData *data, UCS4 cp, const TBC
                        0);
 
         FT_Glyph glyph;
-        FTC(FT_Get_Glyph(face->glyph, &glyph));
+#ifdef TB_RUNTIME_DEBUG_INFO
+        TBDebugError(FT_Get_Glyph(face->glyph, &glyph));
+#endif // TB_RUNTIME_DEBUG_INFO
 		FT_Glyph_StrokeBorder(&glyph, stroker, 0, 1);
 		// Again, this needs to be an outline to work.
 		if (glyph->format == FT_GLYPH_FORMAT_OUTLINE)
@@ -372,4 +372,4 @@ void register_freetype_font_renderer()
 		g_font_manager->AddRenderer(fr);
 }
 
-#endif // TB_FONT_RENDERER_FREETYPEX
+#endif // TB_FONT_RENDERER_FREETYPE

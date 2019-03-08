@@ -190,10 +190,8 @@ public:
 	}
 	virtual void OnError(int line_nr, const TBStr & error)
 	{
-#if defined(TB_RUNTIME_DEBUG_INFO) || 1
-		TBStr err;
-		err.SetFormatted("%s(%d):Parse error: %s\n", m_filename.CStr(), line_nr, error.CStr());
-		TBDebugOut(err);
+#if defined(TB_RUNTIME_DEBUG_INFO)
+		TBDebugError(err);
 #endif // TB_RUNTIME_DEBUG_INFO
 	}
 	virtual void OnComment(int /*line_nr*/, const TBStr & /*comment*/)

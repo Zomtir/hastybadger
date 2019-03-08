@@ -3,14 +3,14 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
+#ifdef TB_FONT_RENDERER_TBBF
+
 #include "tb_font_renderer.h"
 #include "tb_renderer.h"
 #include "tb_tempbuffer.h"
 #include "tb_system.h"
 #include "tb_node_tree.h"
 #include "tb_hashtable.h"
-
-#ifdef TB_FONT_RENDERER_TBBF
 
 using namespace tb;
 

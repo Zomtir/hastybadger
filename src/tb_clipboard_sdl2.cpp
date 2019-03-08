@@ -3,9 +3,9 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "tb_system.h"
-
 #ifdef TB_CLIPBOARD_SDL2
+
+#include "tb_system.h"
 
 #ifdef SPIND_XCODE
 #include "SDL2/SDL.h"

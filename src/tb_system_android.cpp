@@ -3,10 +3,9 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#include "tb_system.h"
-
 #ifdef TB_SYSTEM_ANDROID
 
+#include "tb_system.h"
 #include "tb_debug.h"
 #include "tb_str.h"
 

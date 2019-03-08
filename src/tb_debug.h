@@ -3,20 +3,14 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
+#ifdef TB_RUNTIME_DEBUG_INFO
+
 #ifndef TB_DEBUG_H
 #define TB_DEBUG_H
 
 #include "tb_types.h"
 
-#ifdef TB_RUNTIME_DEBUG_INFO
-#define TB_IF_DEBUG(debug) debug
-#else
-#define TB_IF_DEBUG(debug) 
-#endif
-
 namespace tb {
-
-#ifdef TB_RUNTIME_DEBUG_INFO
 
 class TBDebugInfo
 {
@@ -50,32 +44,32 @@ extern TBDebugInfo g_tb_debug;
 /** Show a window containing runtime debugging settings. */
 void ShowDebugInfoSettingsWindow(class TBWidget *root);
 
-#define TB_DEBUG_SETTING(setting) g_tb_debug.settings[TBDebugInfo::setting]
-#define TB_IF_DEBUG_SETTING(setting, code) if (TB_DEBUG_SETTING(setting)) { code; }
+} // namespace tb
+
+namespace tb { class TBStr; }
+void TBDebugOut(const tb::TBStr & str);
+
+// Cannot be turned into a proper function at the moment
+// Variable arguments cannot be passed easily without wrapping
+#define TBDebugPrint(...) \
+{ \
+	tb::TBStr tmp; \
+	tmp.SetFormatted(__VA_ARGS__); \
+	TBDebugOut(tmp); \
+}
+
+#if defined TB_FONT_RENDERER_FREETYPE || defined TB_FONT_RENDERER_FREETYPEX
+class FT_Error;
+inline void TBDebugError(FT_Error err)
+{
+	TBDebugPrint("%s %s:%d = %d\n", (err ? "Error" : "OK" ), __FILE__, __LINE__, err);
+}
+#endif // TB_FONT_RENDERER_FREETYPE(X)
+
+#endif // TB_DEBUG_H
 
 #else // TB_RUNTIME_DEBUG_INFO
 
-/** Show a window containing runtime debugging settings. */
-#define ShowDebugInfoSettingsWindow(root) ((void)0)
-
-#define TB_DEBUG_SETTING(setting) false
-#define TB_IF_DEBUG_SETTING(setting, code) 
+// If this is used with empty functions, the TB_RUNTIME_DEBUG_INFO checks can be removed from the code
 
 #endif // TB_RUNTIME_DEBUG_INFO
-
-} // namespace tb
-
-#if defined(TB_RUNTIME_DEBUG_INFO) || 1
-namespace tb { class TBStr; }
-void TBDebugOut(const tb::TBStr & str);
-#define TBDebugPrint(...) do {								 \
-		tb::TBStr tmp;										 \
-		tmp.SetFormatted(__VA_ARGS__);						 \
-		TBDebugOut(tmp);									 \
-	} while (0)
-#else
-#define TBDebugOut(str) do { } while (0)
-#define TBDebugPrint(...) do { } while (0)
-#endif
-
-#endif // TB_DEBUG_H

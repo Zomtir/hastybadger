@@ -327,7 +327,12 @@ bool TBSelection::IsSelected() const
 
 void TBSelection::RemoveContent()
 {
-	if (m_const) { TBDebugPrint("Ignoring edit of const: %s\n", __FUNCTION__); return; }
+	if (m_const) {
+#ifdef TB_RUNTIME_DEBUG_INFO
+		TBDebugPrint("Ignoring edit of const: %s\n", __FUNCTION__);
+#endif // TB_RUNTIME_DEBUG_INFO
+		return;
+	}
 	if (!IsSelected())
 		return;
 	styledit->BeginLockScrollbars();

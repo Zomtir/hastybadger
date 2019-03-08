@@ -28,7 +28,9 @@ TBValue &TBNodeRefTree::GetValue(const char *request)
 {
 	if (TBNode *node = m_node.GetNodeFollowRef(request))
 		return node->GetValue();
+#ifdef TB_RUNTIME_DEBUG_INFO
 	TBDebugPrint("TBNodeRefTree::GetValue - Request not found: %s\n", request);
+#endif // TB_RUNTIME_DEBUG_INFO
 	static TBValue nullval;
 	return nullval;
 }
@@ -115,14 +117,18 @@ TBNode *TBNodeRefTree::FollowNodeRef(TBNode *node)
 		}
 		else
 		{
+#ifdef TB_RUNTIME_DEBUG_INFO
 			TBDebugPrint("TBNodeRefTree::ResolveNode - No tree found for request \"%s\" from node \"%s\"\n",
 						 (const char *)node_str, (const char *)node->GetValue().GetString());
+#endif // TB_RUNTIME_DEBUG_INFO
 			break;
 		}
 
 		if (!next_node)
 		{
+#ifdef TB_RUNTIME_DEBUG_INFO
 			TBDebugPrint("TBNodeRefTree::ResolveNode - Node not found on request \"%s\"\n", (const char *)node_str);
+#endif // TB_RUNTIME_DEBUG_INFO
 			break;
 		}
 		node = next_node;
@@ -132,8 +138,10 @@ TBNode *TBNodeRefTree::FollowNodeRef(TBNode *node)
 			node->m_cycle_id = cycle_id;
 		else
 		{
+#ifdef TB_RUNTIME_DEBUG_INFO
 			TBDebugPrint("TBNodeRefTree::ResolveNode - Reference loop detected on request \"%s\" from node \"%s\"\n",
 						 (const char *)node_str, (const char *)node->GetValue().GetString());
+#endif // TB_RUNTIME_DEBUG_INFO
 			return start_node;
 		}
 	}
