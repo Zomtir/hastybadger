@@ -51,10 +51,17 @@ int TBSystem::GetPixelsPerLine()
 	return 40 * GetDPI() / 96;
 }
 
+int TBSystem::_dpi = 96;
+
+// FIXME! Implement!
 int TBSystem::GetDPI()
 {
-	// FIXME! Implement!
-	return 96;
+	return _dpi;
+}
+
+void TBSystem::SetDPI(int dpi)
+{
+	_dpi = dpi;
 }
 
 const char * TBSystem::GetRoot()

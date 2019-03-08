@@ -21,9 +21,11 @@ option(TB_IMAGE "Enable support for TBImage, TBImageManager, TBImageWidget." ON)
 option (TB_IMAGE_LOADER_STB "Enable to support image loading using stb_image.c" ON)
 
 option(TB_SYSTEM_ANDROID "Use Android system calls" OFF)
+option(TB_SYSTEM_WINDOWS "Use EMScripten system calls" OFF)
 option(TB_SYSTEM_LINUX "Use Linux system calls" OFF)
-option(TB_SYSTEM_SDL2 "Use SDL2 system calls" OFF)
 option(TB_SYSTEM_WINDOWS "Use Windows system calls" ON)
+
+option(TB_SUBSYSTEM_SDL2 "Use the SDL2 subsystem" OFF)
 
 option(TB_CLIPBOARD_DUMMY "Use a dummy clipboard" OFF)
 option(TB_CLIPBOARD_GLFW "Use the GLFW clipboard" OFF)
@@ -84,9 +86,10 @@ add_library(hblib SHARED
 	src/tb_str.cpp
 	src/tb_style_edit.cpp
 	src/tb_style_edit_content.cpp
+	src/tb_subsystem_sdl.cpp
 	src/tb_system_android.cpp
+	src/tb_system_ems.cpp
 	src/tb_system_linux.cpp
-	src/tb_system_sdl.cpp
 	src/tb_system_win.cpp
 	src/tb_tab_container.cpp
 	src/tb_tempbuffer.cpp

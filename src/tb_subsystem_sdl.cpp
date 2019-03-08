@@ -117,48 +117,12 @@ void TBSystem::RescheduleTimer(double fire_time)
 	}
 }
 
-int TBSystem::GetLongClickDelayMS()
-{
-	return 500;
-}
-
-int TBSystem::GetPanThreshold()
-{
-	return 5 * GetDPI() / 96;
-}
-
-int TBSystem::GetPixelsPerLine()
-{
-	return 40 * GetDPI() / 96;
-}
-
-int TBSystem::_dpi = 96;
-
-int TBSystem::GetDPI()
-{
-	return _dpi;
-}
-
-void TBSystem::SetDPI(int dpi)
-{
-	_dpi = dpi;
-}
-
+#if !defined TB_SYSTEM_ANDROID
 const char * TBSystem::GetRoot()
 {
-	static char * basepath = NULL;
-	if (!basepath)
-	{
-#ifdef ANDROID
-		TBStr ExtPath(SDL_AndroidGetExternalStoragePath());
-		ExtPath.Append("/");
-		basepath = strdup(ExtPath.CStr());
-#else
-		basepath = SDL_GetBasePath();
-#endif
-	}
-	return basepath;
+	return SDL_GetBasePath();
 }
+#endif
 
 } // namespace tb
 

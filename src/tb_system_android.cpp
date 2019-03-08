@@ -5,6 +5,10 @@
 
 #ifdef TB_SYSTEM_ANDROID
 
+#ifndef TB_SUBSYSTEM_SDL2
+#error "ANDROID CAN NOT BE USED WITHOUT SDL2"
+#endif
+
 #include "tb_system.h"
 #include "tb_debug.h"
 #include "tb_str.h"
@@ -42,6 +46,8 @@ namespace tb {
 
 // == TBSystem ========================================
 
+// Well, one day it Android might be usable without SDL??
+#if !defined TB_SUBSYSTEM_SDL2 && !defined TB_SUBSYSTEM_GLFW
 double TBSystem::GetTimeMS()
 {
 	struct timeval now;
@@ -52,7 +58,7 @@ double TBSystem::GetTimeMS()
 void TBSystem::RescheduleTimer(double fire_time)
 {
 }
-
+#endif // TB_SUBSYSTEM
 int TBSystem::GetLongClickDelayMS()
 {
 	return 500;
@@ -60,23 +66,40 @@ int TBSystem::GetLongClickDelayMS()
 
 int TBSystem::GetPanThreshold()
 {
-	return 5 * GetDPI() / 120;
+	return 5 * GetDPI() / 120; // Potentially only 96!
 }
 
 int TBSystem::GetPixelsPerLine()
 {
-	return 40 * GetDPI() / 120;
+	return 40 * GetDPI() / 120; // Potentially only 96!
 }
+
+int TBSystem::_dpi = 96;
 
 int TBSystem::GetDPI()
 {
 	AConfiguration *config = AConfiguration_new();
 	AConfiguration_fromAssetManager(config, g_pManager);
-	int32_t density = AConfiguration_getDensity(config);
+	_dpi = AConfiguration_getDensity(config);
 	AConfiguration_delete(config);
-	if (density == 0 || density == ACONFIGURATION_DENSITY_NONE)
-		return 120;
-	return density;
+	if (_dpi == 0 || _dpi == ACONFIGURATION_DENSITY_NONE)
+		_dpi = 120;
+	return _dpi;
+}
+
+void TBSystem::SetDPI(int dpi)
+{
+	// FIXME This does nothing, should it overrule GetDPI?
+	_dpi = dpi;
+}
+
+const char * TBSystem::GetRoot()
+{
+	static char * basepath = NULL;
+	TBStr ExtPath(SDL_AndroidGetExternalStoragePath());
+	ExtPath.Append("/");
+	basepath = strdup(ExtPath.CStr());
+	return basepath;
 }
 
 } // namespace tb
