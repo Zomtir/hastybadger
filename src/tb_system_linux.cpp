@@ -53,16 +53,14 @@ int TBSystem::GetPixelsPerLine()
 
 int TBSystem::GetDPI()
 {
-	// FIX: Implement!
+	// FIXME! Implement!
 	return 96;
 }
 
-#ifndef TB_SYSTEM_SDL2
 const char * TBSystem::GetRoot()
 {
 	return "./";
 }
-#endif
 
 } // namespace tb
 
