@@ -8,8 +8,16 @@
 #include "tb_system.h"
 
 #include <Windows.h>
-#include <mmsystem.h>
-#include <stdio.h>
+
+#include <Timeapi.h>
+//timeGetTime
+
+#include <Wingdi.h>
+//GetDeviceCaps
+
+#include <Winuser.h>
+//GetDC
+//ReleaseDC
 
 #ifdef TB_RUNTIME_DEBUG_INFO
 
@@ -26,7 +34,7 @@ namespace tb {
 
 double TBSystem::GetTimeMS()
 {
-	return timeGetTime();
+	return (double)timeGetTime();
 }
 
 // Implementation currently done in port_glfw.cpp.

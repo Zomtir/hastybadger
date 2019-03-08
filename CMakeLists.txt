@@ -32,63 +32,7 @@ option(TB_CLIPBOARD_WINDOWS "Use the Windows clipboard" ON)
 
 option(TB_RUNTIME_DEBUG_INFO "Print more debug info during runtime" OFF)
 
-# FONT RENDERER
-if(TB_FONT_RENDERER_FREETYPE)
-  add_compile_definitions(TB_FONT_RENDERER_FREETYPE=ON)
-endif()
-if(TB_FONT_RENDERER_FREETYPEX)
-  add_compile_definitions(TB_FONT_RENDERER_FREETYPEX=ON)
-endif()
-if(TB_FONT_RENDERER_STB)
-  add_compile_definitions(TB_FONT_RENDERER_STB=ON)
-endif()
-if(TB_FONT_RENDERER_TBBF)
-  add_compile_definitions(TB_FONT_RENDERER_TBBF=ON)
-endif()
-
-if(TB_IMAGE_LOADER_STB)
-  add_compile_definitions(TB_IMAGE_LOADER_STB=ON)
-endif()
-
-add_compile_definitions(
-	TB_GLYPH_CACHE_WIDTH=512
-	TB_GLYPH_CACHE_HEIGHT=512
-)
-
-# SYSTEM
-if(TB_SYSTEM_ANDROID)
-  add_compile_definitions(TB_SYSTEM_ANDROID=ON)
-endif()
-if(TB_SYSTEM_LINUX)
-  add_compile_definitions(TB_SYSTEM_LINUX=ON)
-endif()
-if(TB_SYSTEM_SDL2)
-  add_compile_definitions(TB_SYSTEM_SDL2=ON)
-endif()
-if(TB_SYSTEM_WINDOWS)
-  add_compile_definitions(TB_SYSTEM_WINDOWS=ON)
-endif()
-
-# CLIPBOARD
-if(TB_CLIPBOARD_DUMMY)
-  add_compile_definitions(TB_CLIPBOARD_DUMMY=ON)
-endif()
-if(TB_CLIPBOARD_GLFW)
-  add_compile_definitions(TB_CLIPBOARD_GLFW=ON)
-endif()
-if(TB_CLIPBOARD_SDL2)
-  add_compile_definitions(TB_CLIPBOARD_SDL2=ON)
-endif()
-if(TB_CLIPBOARD_WINDOWS)
-  add_compile_definitions(TB_CLIPBOARD_WINDOWS=ON)
-endif()
-
-# DEBUG
-if(TB_RUNTIME_DEBUG_INFO)
-  add_compile_definitions(TB_RUNTIME_DEBUG_INFO=ON)
-endif()
-
-# ADD SOURCE FILES
+# SOURCE FILES
 add_library(hblib SHARED
 	src/tb_animation.cpp
 	src/tb_bitmap_fragment.cpp
@@ -157,6 +101,63 @@ add_library(hblib SHARED
 	src/tb_window.cpp
 	src/thirdparty/utf8.cpp
 )
+
+# FONT RENDERER
+if(TB_FONT_RENDERER_FREETYPE)
+  add_compile_definitions(TB_FONT_RENDERER_FREETYPE=ON)
+endif()
+if(TB_FONT_RENDERER_FREETYPEX)
+  add_compile_definitions(TB_FONT_RENDERER_FREETYPEX=ON)
+endif()
+if(TB_FONT_RENDERER_STB)
+  add_compile_definitions(TB_FONT_RENDERER_STB=ON)
+endif()
+if(TB_FONT_RENDERER_TBBF)
+  add_compile_definitions(TB_FONT_RENDERER_TBBF=ON)
+endif()
+
+if(TB_IMAGE_LOADER_STB)
+  add_compile_definitions(TB_IMAGE_LOADER_STB=ON)
+endif()
+
+add_compile_definitions(
+	TB_GLYPH_CACHE_WIDTH=512
+	TB_GLYPH_CACHE_HEIGHT=512
+)
+
+# SYSTEM
+if(TB_SYSTEM_ANDROID)
+  add_compile_definitions(TB_SYSTEM_ANDROID=ON)
+endif()
+if(TB_SYSTEM_LINUX)
+  add_compile_definitions(TB_SYSTEM_LINUX=ON)
+endif()
+if(TB_SYSTEM_SDL2)
+  add_compile_definitions(TB_SYSTEM_SDL2=ON)
+endif()
+if(TB_SYSTEM_WINDOWS)
+  add_compile_definitions(TB_SYSTEM_WINDOWS=ON)
+  target_link_libraries(hblib winmm.lib)
+endif()
+
+# CLIPBOARD
+if(TB_CLIPBOARD_DUMMY)
+  add_compile_definitions(TB_CLIPBOARD_DUMMY=ON)
+endif()
+if(TB_CLIPBOARD_GLFW)
+  add_compile_definitions(TB_CLIPBOARD_GLFW=ON)
+endif()
+if(TB_CLIPBOARD_SDL2)
+  add_compile_definitions(TB_CLIPBOARD_SDL2=ON)
+endif()
+if(TB_CLIPBOARD_WINDOWS)
+  add_compile_definitions(TB_CLIPBOARD_WINDOWS=ON)
+endif()
+
+# DEBUG
+if(TB_RUNTIME_DEBUG_INFO)
+  add_compile_definitions(TB_RUNTIME_DEBUG_INFO=ON)
+endif()
 
 # target_include_directories(mylib THIRDPARTY src/thirdparty)
 
