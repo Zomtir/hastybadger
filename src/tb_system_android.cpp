@@ -23,11 +23,12 @@
 #include <android/asset_manager_jni.h>
 #include <android/configuration.h>
 
-#ifdef TB_RUNTIME_DEBUG_INFO
+#if defined TB_RUNTIME_DEBUG_INFO
 
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO, "TB", __VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, "TB", __VA_ARGS__)
 
+// Used with and without SDL2
 void TBDebugOut(const tb::TBStr & str)
 {
 	LOGI("%s", str.CStr());
@@ -55,10 +56,18 @@ double TBSystem::GetTimeMS()
 	return now.tv_usec / 1000 + now.tv_sec * 1000;
 }
 
-void TBSystem::RescheduleTimer(double fire_time)
+// FIXME Needs implementation
+void TBSystem:::RescheduleTimer(double fire_time)
 {
 }
-#endif // TB_SUBSYSTEM
+
+// FIXME Needs correct implementation
+char * TBSystem::GetRoot()
+{
+	return "./";
+}
+#endif // !TB_SUBSYSTEM
+
 int TBSystem::GetLongClickDelayMS()
 {
 	return 500;
@@ -93,6 +102,7 @@ void TBSystem::SetDPI(int dpi)
 	_dpi = dpi;
 }
 
+#if defined TB_SUBSYSTEM_SDL2
 const char * TBSystem::GetRoot()
 {
 	static char * basepath = NULL;
@@ -101,6 +111,7 @@ const char * TBSystem::GetRoot()
 	basepath = strdup(ExtPath.CStr());
 	return basepath;
 }
+#endif // TB_SUBSYSTEM_SDL2
 
 } // namespace tb
 

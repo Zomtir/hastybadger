@@ -10,7 +10,7 @@
 #include <sys/time.h>
 #include <stdio.h>
 
-#ifdef TB_RUNTIME_DEBUG_INFO
+#if defined TB_RUNTIME_DEBUG_INFO && !defined TB_SUBSYSTEM_SDL2
 
 void TBDebugOut(const tb::TBStr & str)
 {
@@ -23,6 +23,8 @@ namespace tb {
 
 // == TBSystem ========================================
 
+#if !defined TB_SUBSYSTEM_SDL2 && !defined TB_SUBSYSTEM_GLFW
+
 double TBSystem::GetTimeMS()
 {
 	struct timeval now;
@@ -31,10 +33,12 @@ double TBSystem::GetTimeMS()
 }
 
 // Implementation currently done in port_glfw.cpp.
-// FIX: Implement here for linux-desktop/android/macos?
-//void TBSystem::RescheduleTimer(double fire_time)
-//{
-//}
+// FIXME: Implement here for linux-desktop/macos?
+void TBSystem::RescheduleTimer(double fire_time)
+{
+}
+
+#endif // !TB_SUBSYSTEM
 
 int TBSystem::GetLongClickDelayMS()
 {

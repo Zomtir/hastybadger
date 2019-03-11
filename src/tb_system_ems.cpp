@@ -10,30 +10,13 @@
 #endif
 
 #include "tb_system.h"
-#include <iostream>
-
 #include "tb_msg.h"
 #include "tb_types.h"
-#include <stdio.h>
-#include <strings.h>
 
 #include <emscripten.h>
 #include "SDL.h"
 
-#if defined(TB_RUNTIME_DEBUG_INFO)
-
-void TBDebugOut(const tb::TBStr & str)
-{
-	std::cerr << str.CStr();
-	SDL_Log("%s", str.CStr());
-	SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "%s", str.CStr());
-}
-
-#endif // TB_RUNTIME_DEBUG_INFO
-
 namespace tb {
-
-// == TBSystem ========================================
 
 double TBSystem::GetTimeMS()
 {
@@ -117,8 +100,6 @@ void TBSystem::SetDPI(int dpi)
 {
 	_dpi = dpi;
 }
-
-#include "tb_subsystem_sdl.cpp"
 
 } // namespace tb
 

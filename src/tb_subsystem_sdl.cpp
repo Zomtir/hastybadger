@@ -3,14 +3,12 @@
 // ==                     See tb_core.h for more information.                    ==
 // ================================================================================
 
-#ifdef TB_SYSTEM_SDL2
+#ifdef TB_SUBSYSTEM_SDL2
 
 #include "tb_system.h"
-#include <iostream>
-
 #include "tb_msg.h"
 #include "tb_types.h"
-#include <stdio.h>
+
 #ifndef _WIN32
 #include <strings.h>
 #endif
@@ -21,19 +19,9 @@
 #include "SDL.h"
 #endif
 
-#if defined(TB_RUNTIME_DEBUG_INFO) || 1
-#ifdef ANDROID
-#include <android/log.h>
-#define  LOG_TAG    "TB"
-#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
-#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
-
-void TBDebugOut(const tb::TBStr & str)
-{
-	LOGI("%s", str.CStr());
-}
-
-#else // ANDROID
+#if defined TB_RUNTIME_DEBUG_INFO && !defined TB_SYSTEM_ANDROID
+#include <iostream>
+#include <stdio.h>
 
 void TBDebugOut(const tb::TBStr & str)
 {
@@ -41,14 +29,11 @@ void TBDebugOut(const tb::TBStr & str)
 	SDL_Log("%s", str.CStr());
 	SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "%s", str.CStr());
 }
-#endif // ANDROID
 #endif // TB_RUNTIME_DEBUG_INFO
-
 
 namespace tb {
 
-// == TBSystem ========================================
-
+#if !defined TB_SYSTEM_EMSCRIPTEN
 double TBSystem::GetTimeMS()
 {
 #if 1
@@ -63,7 +48,9 @@ double TBSystem::GetTimeMS()
 	return now.tv_usec/1000 + now.tv_sec*1000;
 #endif
 }
+#endif // !TB_SYSTEM
 
+#if !defined TB_SYSTEM_EMSCRIPTEN
 static SDL_TimerID tb_sdl_timer_id = 0;
 static Uint32 tb_sdl_timer_callback(Uint32 /*interval*/, void * /*param*/)
 {
@@ -122,8 +109,8 @@ const char * TBSystem::GetRoot()
 {
 	return SDL_GetBasePath();
 }
-#endif
+#endif // !TB_SYSTEM_ANDROID
 
 } // namespace tb
 
-#endif // TB_SYSTEM_SDL2
+#endif // TB_SUBSYSTEM_SDL2
