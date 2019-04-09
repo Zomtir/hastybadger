@@ -76,6 +76,7 @@ void TBID::Set(const char *string)
 			}
 #endif
 			assert(other_id->debug_string == debug_string);
+			(void)(other_id); // Wunused-variable
 		}
 		else if (debug_string.Length())
 		{

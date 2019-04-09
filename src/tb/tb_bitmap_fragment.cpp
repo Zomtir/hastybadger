@@ -154,6 +154,7 @@ void TBSpaceAllocator::FreeSpace(Space *space)
 		x = tmp->x + tmp->width;
 		tmp = tmp->GetNext();
 	}
+    (void)(x); // Wunused-variable
 #endif // TB_RUNTIME_DEBUG_INFO
 }
 
